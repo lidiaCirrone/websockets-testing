@@ -1,6 +1,7 @@
 import { IncomingMessage } from 'http';
 import { WebSocket, WebSocketServer, ServerOptions, RawData } from 'ws';
 import { UserManager } from './user-manager';
+import { WsMessage } from '@websocket/types';
 
 export class WsHandler {
   private wsServer: WebSocketServer;
@@ -29,10 +30,13 @@ export class WsHandler {
   }
 
   onSocketMessage(socket: WebSocket, data: RawData) {
-    const payload = JSON.parse(`${data}`);
+    const payload: WsMessage = JSON.parse(`${data}`);
     console.log('Received: ', payload);
 
-    this.userManager.send(socket, { reply: 'Message received' });
+    this.userManager.send(socket, {
+      event: 'chat',
+      contents: 'hey, still here',
+    });
   }
 
   onSocketClosed(socket: WebSocket, code: number, reason: Buffer) {
