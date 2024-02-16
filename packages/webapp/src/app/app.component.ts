@@ -28,4 +28,8 @@ export class AppComponent implements OnInit {
 
     this.currentUser = { name: 'Xavier', id: 3 };
   }
+
+  connect(usernameInput: HTMLInputElement) {
+    console.log(`Connecting as ${usernameInput.value}`);
+  }
 }

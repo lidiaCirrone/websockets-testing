@@ -1,5 +1,15 @@
-<div class="login-state">
-  {{ currentUser | json }}
+<div class="login-state" [ngSwitch]="currentUser === undefined">
+  <ng-container *ngSwitchCase="true">
+    <mat-form-field appearance="standard">
+      <input #username matInput placeholder="What's your name?" />
+    </mat-form-field>
+    <button (click)="connect(username)" mat-raised-button color="primary">
+      Connect
+    </button>
+  </ng-container>
+  <ng-container *ngSwitchCase="false">
+    <h3>{{ currentUser | json }}</h3>
+  </ng-container>
 </div>
 
 <div class="chat-area">
@@ -10,7 +20,7 @@
 </div>
 
 <div class="chat-input">
-   <mat-form-field appearance="outline">
-      <input matInput placeholder="What's on your mind?">
-   </mat-form-field>
+  <mat-form-field appearance="outline">
+    <input matInput placeholder="What's on your mind?" />
+  </mat-form-field>
 </div>
