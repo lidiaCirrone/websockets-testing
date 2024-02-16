@@ -1,0 +1,30 @@
+:host {
+   display: grid;
+   grid-template-areas: 
+   "header  login-state"
+   "user-list chat-area"
+   "user-list chat-input";
+
+   grid-template-columns: 1fr 3fr;
+   gap: 20px;
+}
+
+.header {
+   grid-area: header;
+}
+
+.login-state {
+   grid-area: login-state;
+}
+
+.user-list {
+   grid-area: user-list;
+}
+
+.chat-area {
+   grid-area: chat-area;
+}
+
+.chat-input {
+   grid-area: chat-input;
+}
