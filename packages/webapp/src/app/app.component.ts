@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ChatRelayMessage, User } from '@websocket/types';
+import { AppService } from './app.service';
 
 @Component({
   selector: 'websocket-root',
@@ -11,6 +12,8 @@ export class AppComponent implements OnInit {
 
   messages: ChatRelayMessage[] = [];
   currentUser: User;
+
+  constructor(private appService: AppService) {}
 
   ngOnInit(): void {
     this.messages = [
@@ -26,10 +29,12 @@ export class AppComponent implements OnInit {
       },
     ];
 
-    this.currentUser = { name: 'Xavier', id: 3 };
+    this.appService.user$.subscribe((user) => (this.currentUser = user));
   }
 
   connect(usernameInput: HTMLInputElement) {
-    console.log(`Connecting as ${usernameInput.value}`);
+    const name = usernameInput.value;
+    console.log(`Connecting as ${name}`);
+    this.appService.connect(name);
   }
 }
