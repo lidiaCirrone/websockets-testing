@@ -16,19 +16,9 @@ export class AppComponent implements OnInit {
   constructor(private appService: AppService) {}
 
   ngOnInit(): void {
-    this.messages = [
-      {
-        event: 'chatRelay',
-        author: { name: 'Jane', id: 1 },
-        contents: 'Hi, this is Jane',
-      },
-      {
-        event: 'chatRelay',
-        author: { name: 'Henry', id: 2 },
-        contents: 'Hello Jane, I am Henry',
-      },
-    ];
-
+    this.appService.chatMessage$.subscribe(
+      (msg) => (this.messages = [...this.messages, msg])
+    );
     this.appService.user$.subscribe((user) => (this.currentUser = user));
   }
 
@@ -36,5 +26,10 @@ export class AppComponent implements OnInit {
     const name = usernameInput.value;
     console.log(`Connecting as ${name}`);
     this.appService.connect(name);
+  }
+
+  send(chatInput: HTMLInputElement) {
+    this.appService.send(chatInput.value);
+    chatInput.value = '';
   }
 }
