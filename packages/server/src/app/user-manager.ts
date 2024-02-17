@@ -5,6 +5,7 @@ import {
   LoginMessage,
   SystemNotice,
   User,
+  UserListMessage,
   WsMessage,
 } from '@websocket/types';
 import { IncomingMessage } from 'http';
@@ -35,6 +36,7 @@ export class UserManager {
     socket.send(JSON.stringify(loginMessage));
 
     this.sockets.set(socket, user);
+    this.sendUserListToAll();
   }
 
   remove(socket: WebSocket) {
@@ -46,6 +48,7 @@ export class UserManager {
       contents: `${name} has left the chat`,
     };
     this.sendToAll(systemNotice);
+    this.sendUserListToAll();
   }
 
   send(socket: WebSocket, message: WsMessage) {
@@ -70,5 +73,14 @@ export class UserManager {
     };
 
     this.sendToAll(relayMsg);
+  }
+
+  sendUserListToAll() {
+    const message: UserListMessage = {
+      event: 'userList',
+      users: Array.from(this.sockets.values()),
+    };
+
+    this.sendToAll(message);
   }
 }

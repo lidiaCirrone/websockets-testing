@@ -15,6 +15,7 @@ export class AppService {
   socket: WebSocketSubject<WsMessage>;
   chatMessage$ = new Subject<ChatRelayMessage>();
   systemNotice$ = new Subject<SystemNotice>();
+  userList$ = new BehaviorSubject<User[]>([]);
 
   connect(name: string) {
     this.socket = webSocket(`ws://localhost:8080?name=${name}`);
@@ -40,6 +41,9 @@ export class AppService {
         break;
       case 'systemNotice':
         this.systemNotice$.next(message);
+        break;
+      case 'userList':
+        this.userList$.next(message.users);
         break;
       default:
         break;
